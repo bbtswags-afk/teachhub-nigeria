@@ -1,0 +1,128 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?  @unique
+  password  String?
+  role      String   @default("STUDENT") // TEACHER, STUDENT
+  school    String? // For teachers
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  address String?
+
+  notifications Notification[]
+
+  courses       Course[]
+  library       LibraryItem[]
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  subject     String?
+  grade       String?
+  thumbnail   String?
+  color       String?  // e.g. "bg-blue-100"
+  published   Boolean  @default(false)
+  isPublic    Boolean  @default(false) // Shared to Community Library
+  
+  teacherId   String
+  teacher     User     @relation(fields: [teacherId], references: [id])
+  
+  lessons     Lesson[]
+  savedBy     LibraryItem[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String? 
+  order       Int      @default(0)
+  
+  // New fields
+  summary     String?  // Lesson summary/teacher notes
+  lessonPlan  String?  // Detailed lesson plan
+  gameUrl     String?  // Wordwall or other game link
+  
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  // Content
+  articleContent String? // Markdown or HTML
+  videoUrl       String? // Deprecated in favor of media, kept for existing
+  
+  media          LessonMedia[]
+  quizzes        QuizQuestion[]
+  flashcards     Flashcard[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LessonMedia {
+  id        String   @id @default(cuid())
+  url       String
+  type      String   // "image" or "video"
+  order     Int      @default(0)
+  
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+}
+
+model QuizQuestion {
+  id            String   @id @default(cuid())
+  question      String
+  options       String   // JSON string of options ["A", "B", "C", "D"]
+  correctOption Int      // Index of correct option
+  
+  lessonId      String
+  lesson        Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+}
+
+model Flashcard {
+  id          String   @id @default(cuid())
+  front       String
+  back        String
+  image       String?  // Optional image URL
+  color       String?  // Optional color
+  
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+}
+
+model LibraryItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  savedAt   DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+}
