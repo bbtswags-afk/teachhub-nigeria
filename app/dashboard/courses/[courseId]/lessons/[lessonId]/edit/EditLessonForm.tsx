@@ -599,13 +599,13 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
                     </div>
 
                     {/* Preview Content */}
-                    <div className="p-8 md:p-12 space-y-16">
+                    <div className="p-5 md:p-12 space-y-8 md:space-y-16">
                         {/* Header */}
                         <div>
                             <div className="inline-flex items-center gap-2 text-slate-400 mb-4 text-sm font-medium">
                                 <ArrowLeft size={16} /> Back to Course
                             </div>
-                            <h1 className="text-4xl font-bold text-slate-900 tracking-tight">{formData.title || "Untitled Lesson"}</h1>
+                            <h1 className="text-2xl md:text-4xl font-bold text-slate-900 tracking-tight">{formData.title || "Untitled Lesson"}</h1>
                         </div>
 
                         {/* Game Embed */}
@@ -703,12 +703,12 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
             </motion.div>
 
             {/* Navigation Footer */}
-            <div className="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 z-50">
+            <div className="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-3 md:p-4 z-50">
                 <div className="max-w-5xl mx-auto flex justify-between items-center">
                     <button
                         onClick={() => setStep(s => Math.max(1, s - 1))}
                         disabled={step === 1}
-                        className="px-6 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-100 disabled:opacity-50 transition-colors"
+                        className="px-4 py-2 md:px-6 md:py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-100 disabled:opacity-50 transition-colors text-sm md:text-base"
                     >
                         Back
                     </button>
@@ -716,11 +716,11 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
                         <button
                             onClick={() => step < steps.length ? setStep(s => s + 1) : handleSubmit()}
                             disabled={loading}
-                            className="px-8 py-3 bg-primary text-white rounded-xl font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-500/30 flex items-center gap-2 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="px-5 py-2 md:px-8 md:py-3 bg-primary text-white rounded-xl font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-500/30 flex items-center gap-2 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed text-sm md:text-base"
                         >
                             {step === steps.length ? (loading ? "Updating..." : "Update Lesson") : "Next Step"}
-                            {!loading && step < steps.length && <ArrowRight size={20} />}
-                            {!loading && step === steps.length && <Save size={20} />}
+                            {!loading && step < steps.length && <ArrowRight size={20} className="hidden sm:inline" />}
+                            {!loading && step === steps.length && <Save size={20} className="hidden sm:inline" />}
                         </button>
                     </div>
                 </div>

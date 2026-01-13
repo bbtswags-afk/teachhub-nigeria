@@ -40,31 +40,31 @@ export default function FlashcardsPage() {
                 </div>
             </div>
 
-            <div className="relative w-full max-w-xl aspect-[3/2] perspective-1000 cursor-pointer group" onClick={() => setIsFlipped(!isFlipped)}>
+            <div className="relative w-full max-w-xl aspect-[4/5] sm:aspect-[3/2] perspective-1000 cursor-pointer group" onClick={() => setIsFlipped(!isFlipped)}>
                 <motion.div
                     className="w-full h-full relative preserve-3d transition-transform duration-500"
                     animate={{ rotateY: isFlipped ? 180 : 0 }}
                     transition={{ type: "spring", stiffness: 260, damping: 20 }}
                 >
                     {/* Front */}
-                    <div className="absolute inset-0 backface-hidden bg-white border-2 border-slate-100 rounded-3xl shadow-xl flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-white to-slate-50">
+                    <div className="absolute inset-0 backface-hidden bg-white border-2 border-slate-100 rounded-3xl shadow-xl flex flex-col items-center justify-center p-6 sm:p-8 text-center bg-gradient-to-br from-white to-slate-50">
                         <span className="absolute top-6 left-6 text-xs font-bold text-slate-400 uppercase tracking-widest">Question</span>
-                        <p className="text-3xl font-bold text-slate-800">{FLASHCARDS[currentIndex].front}</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-slate-800">{FLASHCARDS[currentIndex].front}</p>
                         <span className="absolute bottom-6 text-slate-400 text-sm animate-pulse">Tap to flip</span>
                     </div>
 
                     {/* Back */}
                     <div
-                        className="absolute inset-0 backface-hidden bg-indigo-600 rounded-3xl shadow-xl flex flex-col items-center justify-center p-8 text-center text-white"
+                        className="absolute inset-0 backface-hidden bg-indigo-600 rounded-3xl shadow-xl flex flex-col items-center justify-center p-6 sm:p-8 text-center text-white"
                         style={{ transform: "rotateY(180deg)" }}
                     >
                         <span className="absolute top-6 left-6 text-xs font-bold text-indigo-200 uppercase tracking-widest">Answer</span>
-                        <p className="text-2xl font-medium leading-relaxed">{FLASHCARDS[currentIndex].back}</p>
+                        <p className="text-xl sm:text-2xl font-medium leading-relaxed">{FLASHCARDS[currentIndex].back}</p>
                     </div>
                 </motion.div>
             </div>
 
-            <div className="flex gap-4 mt-10">
+            <div className="flex gap-4 mt-6 md:mt-10">
                 <button
                     onClick={(e) => { e.stopPropagation(); handlePrev(); }}
                     className="p-4 bg-white rounded-full shadow-md text-slate-500 hover:text-primary hover:shadow-lg transition-all"

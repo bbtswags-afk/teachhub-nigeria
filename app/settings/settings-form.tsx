@@ -131,7 +131,7 @@ export default function SettingsForm({ user }: SettingsFormProps) {
 
                     <div className="col-span-1 md:col-span-2 space-y-2">
                         <label className="text-sm font-bold text-slate-700">Profile Picture</label>
-                        <div className="flex items-center gap-6 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div className="flex flex-col sm:flex-row items-center gap-6 p-4 bg-slate-50 rounded-2xl border border-slate-100">
                             <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-white border-2 border-slate-200 shadow-sm flex-shrink-0">
                                 {avatar ? (
                                     <img src={avatar} alt="Profile" className="w-full h-full object-cover" />
@@ -141,9 +141,9 @@ export default function SettingsForm({ user }: SettingsFormProps) {
                                     </div>
                                 )}
                             </div>
-                            <div className="flex-1 space-y-2">
-                                <div className="flex gap-3">
-                                    <label className="cursor-pointer bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 transition-colors shadow-sm">
+                            <div className="flex-1 space-y-2 w-full sm:w-auto text-center sm:text-left">
+                                <div className="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start">
+                                    <label className="cursor-pointer bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-sm">
                                         <Upload size={16} />
                                         Upload New Picture
                                         <input
