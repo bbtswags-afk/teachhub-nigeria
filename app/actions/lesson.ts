@@ -30,7 +30,7 @@ const LessonSchema = z.object({
     summary: z.string().optional(),
     lessonPlan: z.string().optional(),
     gameUrl: z.string().optional(),
-    pdfUrl: z.string().optional(),
+    documentUrl: z.string().optional(),
     article: z.string().optional(),
     media: z.array(MediaSchema).optional(),
     slug: z.string().optional(), // We'll generate if empty
@@ -56,7 +56,7 @@ export async function createLesson(courseId: string, data: any) {
         throw new Error(`Invalid Data: ${fieldErrors}`);
     }
 
-    const { title, summary, lessonPlan, gameUrl, pdfUrl, article, media, quizzes, flashcards } = result.data;
+    const { title, summary, lessonPlan, gameUrl, documentUrl, article, media, quizzes, flashcards } = result.data;
     const slug = title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
 
     try {
@@ -68,7 +68,7 @@ export async function createLesson(courseId: string, data: any) {
                 summary,
                 lessonPlan,
                 gameUrl,
-                pdfUrl,
+                documentUrl,
                 courseId,
                 articleContent: article,
                 media: {
@@ -152,7 +152,7 @@ export async function updateLesson(lessonId: string, courseId: string, data: any
     const result = LessonSchema.safeParse(data);
     if (!result.success) throw new Error("Invalid Data");
 
-    const { title, summary, lessonPlan, gameUrl, pdfUrl, article, media, quizzes, flashcards } = result.data;
+    const { title, summary, lessonPlan, gameUrl, documentUrl, article, media, quizzes, flashcards } = result.data;
     const slug = title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
 
     await prisma.lesson.update({
@@ -163,7 +163,7 @@ export async function updateLesson(lessonId: string, courseId: string, data: any
             summary,
             lessonPlan,
             gameUrl,
-            pdfUrl,
+            documentUrl,
             articleContent: article,
             media: {
                 deleteMany: {},

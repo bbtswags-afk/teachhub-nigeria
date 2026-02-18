@@ -21,7 +21,7 @@ export default function LessonViewer({ lesson }: LessonViewerProps) {
         { id: "quiz", label: "Quiz", icon: CheckCircle, show: lesson.quizzes && lesson.quizzes.length > 0 },
         { id: "flashcards", label: "Flashcards", icon: Layers, show: lesson.flashcards && lesson.flashcards.length > 0 },
         { id: "game", label: "Game", icon: Gamepad2, show: !!lesson.gameUrl },
-        { id: "resources", label: "Resources", icon: FileText, show: !!lesson.pdfUrl },
+        { id: "resources", label: "Resources", icon: FileText, show: !!lesson.documentUrl },
     ].filter(t => t.show);
 
     const activeIndex = tabs.findIndex(t => t.id === activeTab);
@@ -137,20 +137,40 @@ export default function LessonViewer({ lesson }: LessonViewerProps) {
                                         <FileText className="text-red-500" /> Lesson Resources
                                     </h2>
                                     <a
-                                        href={lesson.pdfUrl}
+                                        href={lesson.documentUrl}
                                         download
                                         target="_blank"
                                         className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-slate-700 transition-colors"
                                     >
-                                        <Download size={16} /> Download PDF
+                                        <Download size={16} /> Download Document
                                     </a>
                                 </div>
-                                <div className="aspect-[3/4] w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200">
-                                    <iframe
-                                        src={`${lesson.pdfUrl}#toolbar=0`}
-                                        className="w-full h-full"
-                                    />
-                                </div>
+                                {lesson.documentUrl?.toLowerCase().endsWith('.pdf') ? (
+                                    <div className="aspect-[3/4] w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200">
+                                        <iframe
+                                            src={`${lesson.documentUrl}#toolbar=0`}
+                                            className="w-full h-full"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="p-12 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center gap-4 text-center">
+                                        <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center">
+                                            <FileText size={32} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-lg font-bold text-slate-900">Document Available</h3>
+                                            <p className="text-slate-500 text-sm">This resource is a Word document (or other format) and cannot be previewed here.</p>
+                                        </div>
+                                        <a
+                                            href={lesson.documentUrl}
+                                            download
+                                            target="_blank"
+                                            className="mt-2 bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
+                                        >
+                                            <Download size={18} /> Download to View
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </motion.div>

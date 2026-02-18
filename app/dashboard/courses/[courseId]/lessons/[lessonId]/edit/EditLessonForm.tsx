@@ -37,7 +37,7 @@ type FormData = {
     lessonPlan: string;
     contentBlocks: ContentBlock[];
     gameUrl: string;
-    pdfUrl: string;
+    documentUrl: string;
     quizzes: QuizParams[];
     flashcards: FlashcardParams[];
 };
@@ -78,7 +78,7 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
             lessonPlan: lesson.lessonPlan || "",
             contentBlocks: initialBlocks.length > 0 ? initialBlocks : [{ id: "start-1", type: "text", content: "" }],
             gameUrl: lesson.gameUrl || "",
-            pdfUrl: lesson.pdfUrl || "",
+            documentUrl: lesson.documentUrl || "",
             quizzes: lesson.quizzes?.length > 0 ? lesson.quizzes.map((q: any) => ({
                 question: q.question,
                 options: JSON.parse(q.options),
@@ -98,7 +98,7 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
         { id: 3, title: "Lesson Content", icon: Layers },
         // { id: 4, title: "Media", icon: Video }, // Merged
         { id: 4, title: "Game", icon: Gamepad2 },
-        { id: 5, title: "PDF", icon: FileText },
+        { id: 5, title: "Resources", icon: FileText },
         { id: 6, title: "Quiz", icon: HelpCircle },
         { id: 7, title: "Flashcards", icon: Layers },
         { id: 8, title: "Review", icon: Check },
@@ -403,15 +403,15 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
         </div>
     );
 
-    const renderStepPDF = () => (
+    const renderStepDocuments = () => (
         <div className="space-y-4 max-w-lg mx-auto">
-            <h2 className="text-xl font-bold text-slate-800 text-center mb-6">PDF Resource</h2>
+            <h2 className="text-xl font-bold text-slate-800 text-center mb-6">Lesson Resources</h2>
             <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">Upload PDF</label>
+                <label className="text-sm font-medium text-slate-700">Upload Document (PDF or Word)</label>
                 <div className="relative p-8 border-2 border-dashed border-slate-300 rounded-xl text-center hover:bg-slate-50 transition-colors">
                     <input
                         type="file"
-                        accept=".pdf"
+                        accept=".pdf,.doc,.docx"
                         onChange={async (e) => {
                             if (e.target.files && e.target.files[0]) {
                                 const file = e.target.files[0];
@@ -425,7 +425,7 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
                                     });
                                     const data = await res.json();
                                     if (data.success) {
-                                        updateField("pdfUrl", data.url);
+                                        updateField("documentUrl", data.url);
                                     } else {
                                         alert("Upload failed");
                                     }
@@ -441,16 +441,16 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
                     />
                     <div className="flex flex-col items-center gap-2">
                         <Upload size={32} className="text-slate-400" />
-                        <span className="text-sm font-bold text-slate-600">Click to Upload PDF</span>
-                        <span className="text-xs text-slate-400">or drag and drop</span>
+                        <span className="text-sm font-bold text-slate-600">Click to Upload Document</span>
+                        <span className="text-xs text-slate-400">PDF, DOC, DOCX</span>
                     </div>
                 </div>
-                {formData.pdfUrl && (
+                {formData.documentUrl && (
                     <div className="mt-4 flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-xl text-green-700">
                         <FileText size={20} />
-                        <span className="text-sm font-medium truncate flex-1">PDF Uploaded Successfully</span>
-                        <a href={formData.pdfUrl} target="_blank" className="text-xs underline">View</a>
-                        <button onClick={() => updateField("pdfUrl", "")} className="p-1 hover:bg-green-100 rounded-lg"><X size={16} /></button>
+                        <span className="text-sm font-medium truncate flex-1">Document Uploaded Successfully</span>
+                        <a href={formData.documentUrl} target="_blank" className="text-xs underline">View</a>
+                        <button onClick={() => updateField("documentUrl", "")} className="p-1 hover:bg-green-100 rounded-lg"><X size={16} /></button>
                     </div>
                 )}
             </div>
@@ -754,7 +754,7 @@ export default function EditLessonForm({ lesson }: { lesson: any }) {
                 {step === 2 && renderStep2()}
                 {step === 3 && renderStep3()}
                 {step === 4 && renderStep5()}
-                {step === 5 && renderStepPDF()}
+                {step === 5 && renderStepDocuments()}
                 {step === 6 && renderStep6()}
                 {step === 7 && renderStep7()}
                 {step === 8 && renderStep8()}
