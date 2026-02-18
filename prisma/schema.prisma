@@ -57,6 +57,7 @@ model Lesson {
   summary     String?  // Lesson summary/teacher notes
   lessonPlan  String?  // Detailed lesson plan
   gameUrl     String?  // Wordwall or other game link
+  pdfUrl      String?  // PDF file for download/view
   
   courseId    String
   course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)

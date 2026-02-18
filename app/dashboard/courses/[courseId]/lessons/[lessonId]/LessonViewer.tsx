@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, Gamepad2, CheckCircle, Layers, ArrowRight, ArrowLeft } from "lucide-react";
+import { BookOpen, Gamepad2, CheckCircle, Layers, ArrowRight, ArrowLeft, FileText, Download } from "lucide-react";
 import BlockRenderer from "@/components/ui/BlockRenderer";
 import QuizPlayer from "@/components/ui/QuizPlayer";
 import FlashcardDeck from "@/components/ui/FlashcardDeck";
@@ -21,6 +21,7 @@ export default function LessonViewer({ lesson }: LessonViewerProps) {
         { id: "quiz", label: "Quiz", icon: CheckCircle, show: lesson.quizzes && lesson.quizzes.length > 0 },
         { id: "flashcards", label: "Flashcards", icon: Layers, show: lesson.flashcards && lesson.flashcards.length > 0 },
         { id: "game", label: "Game", icon: Gamepad2, show: !!lesson.gameUrl },
+        { id: "resources", label: "Resources", icon: FileText, show: !!lesson.pdfUrl },
     ].filter(t => t.show);
 
     const activeIndex = tabs.findIndex(t => t.id === activeTab);
@@ -124,6 +125,30 @@ export default function LessonViewer({ lesson }: LessonViewerProps) {
                                         src={lesson.gameUrl}
                                         className="w-full h-full"
                                         allowFullScreen
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "resources" && (
+                            <div className="space-y-4 max-w-4xl mx-auto">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                                        <FileText className="text-red-500" /> Lesson Resources
+                                    </h2>
+                                    <a
+                                        href={lesson.pdfUrl}
+                                        download
+                                        target="_blank"
+                                        className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-slate-700 transition-colors"
+                                    >
+                                        <Download size={16} /> Download PDF
+                                    </a>
+                                </div>
+                                <div className="aspect-[3/4] w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200">
+                                    <iframe
+                                        src={`${lesson.pdfUrl}#toolbar=0`}
+                                        className="w-full h-full"
                                     />
                                 </div>
                             </div>
